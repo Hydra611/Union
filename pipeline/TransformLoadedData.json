@@ -5,6 +5,39 @@
 			{
 				"name": "LowerCase Name",
 				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Clean Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": "INSERT INTO Transformation.ProductCategory (ParentProductCategoryID, Name, rowguid, ModifiedDate)\nSELECT ParentProductCategoryID, LOWER(Name), rowguid, ModifiedDate \nFROM SalesLT.ProductCategory;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Clean Data",
+				"type": "Script",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -22,7 +55,7 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "TRUNCATE TABLE Transformation.ProductCategory;\n\nINSERT INTO Transformation.ProductCategory (ParentProductCategoryID, Name, rowguid, ModifiedDate)\nSELECT ParentProductCategoryID, LOWER(Name), rowguid, ModifiedDate \nFROM SalesLT.ProductCategory;"
+							"text": "TRUNCATE TABLE Transformation.ProductCategory;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
