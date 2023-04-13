@@ -1,11 +1,18 @@
 {
-	"name": "MetadataCopySQLDbBased",
+	"name": "MetadataCopySQLDBBased",
 	"properties": {
 		"activities": [
 			{
 				"name": "Get Suffixes",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Change Names to Capital_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -108,8 +115,53 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Change Names to Capital_copy1",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "tablename",
+									"type": "String",
+									"value": {
+										"value": "@concat('Names_','A')",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "NonQuery",
+							"text": {
+								"value": "TRUNCATE TABLE [UiLoad].[pipeline().parameters.tablename];\nINSERT INTO [UiLoad].[pipeline().parameters.tablename] (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM [UiStaging].[pipeline().parameters.tablename];",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
+		"parameters": {
+			"tablename": {
+				"type": "String"
+			}
+		},
 		"variables": {
 			"v_suffix": {
 				"type": "Array"
