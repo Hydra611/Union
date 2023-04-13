@@ -47,6 +47,56 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Loop Over Suffixes",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set Variable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('v_suffix')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Change Names to Capital",
+							"type": "Script",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "NonQuery",
+										"text": {
+											"value": "TRUNCATE TABLE [UiLoad].[@concat('Names_',@variables('v_suffix'))];\nINSERT INTO [UiLoad].[@concat('Names_',@variables('v_suffix'))] (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM [UiStaging].[@concat('Names_',@variables('v_suffix'))];",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					]
+				}
 			}
 		],
 		"variables": {
