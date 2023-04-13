@@ -70,7 +70,7 @@
 												"name": "p_suffix",
 												"type": "String",
 												"value": {
-													"value": "@item().Namesuffix",
+													"value": "@concat('Names_',item().Namesuffix)",
 													"type": "Expression"
 												},
 												"direction": "Input"
