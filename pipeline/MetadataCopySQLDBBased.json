@@ -67,7 +67,7 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "@('TRUNCATE TABLE UiLoad.', item());",
+											"value": "('TRUNCATE TABLE UiLoad.', @item().Namesuffix);",
 											"type": "Expression"
 										}
 									}
