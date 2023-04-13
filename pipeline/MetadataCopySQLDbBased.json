@@ -1,6 +1,59 @@
 {
-	"name": "MetadataCopy",
+	"name": "MetadataCopySQLDbBased",
 	"properties": {
+		"activities": [
+			{
+				"name": "Get Suffixes",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "SELECT Namesuffix\nFROM UiConfig.Suffixes \nAS [result]"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Set Variable",
+				"type": "AppendVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Suffixes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_suffix",
+					"value": {
+						"value": "@activity('Get Suffixes').output.resultSets[0].rows",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"v_suffix": {
+				"type": "Array"
+			}
+		},
 		"annotations": []
 	}
 }
