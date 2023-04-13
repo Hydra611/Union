@@ -99,11 +99,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"tablename": {
-				"type": "String"
-			}
-		},
 		"variables": {
 			"v_suffix": {
 				"type": "Array"
