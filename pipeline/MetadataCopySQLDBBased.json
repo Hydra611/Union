@@ -49,7 +49,14 @@
 						{
 							"name": "Change Names to Capital",
 							"type": "Script",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set Tablename",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -67,12 +74,25 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "TRUNCATE TABLE [UiLoad].[@concat('Names_',@item().Namesuffix)];",
+											"value": "@concat('TRUNCATE TABLE [UiLoad].[',variables('v_tablename'),']');",
 											"type": "Expression"
 										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						},
+						{
+							"name": "Set Tablename",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_tablename",
+								"value": {
+									"value": "@concat('Names_',item().Namesuffix)",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -102,6 +122,9 @@
 		"variables": {
 			"v_suffix": {
 				"type": "Array"
+			},
+			"v_tablename": {
+				"type": "String"
 			}
 		},
 		"annotations": []
