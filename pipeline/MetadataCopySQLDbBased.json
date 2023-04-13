@@ -29,26 +29,6 @@
 				}
 			},
 			{
-				"name": "Set Variable",
-				"type": "AppendVariable",
-				"dependsOn": [
-					{
-						"activity": "Get Suffixes",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "v_suffix",
-					"value": {
-						"value": "@activity('Get Suffixes').output.resultSets[0].rows",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "Loop Over Suffixes",
 				"type": "ForEach",
 				"dependsOn": [
@@ -96,6 +76,26 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Set Variable",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Suffixes",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_suffix",
+					"value": {
+						"value": "@activity('Get Suffixes').output.resultSets[0].rows",
+						"type": "Expression"
+					}
 				}
 			}
 		],
