@@ -65,6 +65,17 @@
 							"typeProperties": {
 								"scripts": [
 									{
+										"parameters": [
+											{
+												"name": "p_suffix",
+												"type": "String",
+												"value": {
+													"value": "@item().Namesuffix",
+													"type": "Expression"
+												},
+												"direction": "Input"
+											}
+										],
 										"type": "NonQuery",
 										"text": {
 											"value": "TRUNCATE TABLE [UiLoad].[@concat('Names_',@item().Namesuffix)];\nINSERT INTO [UiLoad].[@concat('Names_',@item().Namesuffix)] (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM [UiStaging].[@concat('Names_',@item().Namesuffix)];",
