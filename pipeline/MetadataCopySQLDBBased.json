@@ -22,7 +22,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "SELECT Namesuffix\nFROM UiConfig.Suffixes \nAS [result]"
+							"text": "SELECT concat('Names_',Namesuffix) as Namesuffix\nFROM UiConfig.Suffixes \nAS [result]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -49,14 +49,7 @@
 						{
 							"name": "Change Names to Capital",
 							"type": "Script",
-							"dependsOn": [
-								{
-									"activity": "Set Tablename",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -74,25 +67,12 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "@concat('TRUNCATE TABLE [UiLoad].[',variables('v_tablename'),']');",
+											"value": "@('TRUNCATE TABLE UiLoad.', item());",
 											"type": "Expression"
 										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
-							}
-						},
-						{
-							"name": "Set Tablename",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "v_tablename",
-								"value": {
-									"value": "@concat('Names_',item().Namesuffix)",
-									"type": "Expression"
-								}
 							}
 						}
 					]
