@@ -67,7 +67,7 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "TRUNCATE TABLE [UiLoad].[@concat('Names_',@variables('v_suffix'))];\nINSERT INTO [UiLoad].[@concat('Names_',@variables('v_suffix'))] (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM [UiStaging].[@concat('Names_',@variables('v_suffix'))];",
+											"value": "TRUNCATE TABLE [UiLoad].[@concat('Names_',@item().Namesuffix)];\nINSERT INTO [UiLoad].[@concat('Names_',@item().Namesuffix)] (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM [UiStaging].[@concat('Names_',@item().Namesuffix)];",
 											"type": "Expression"
 										}
 									}
