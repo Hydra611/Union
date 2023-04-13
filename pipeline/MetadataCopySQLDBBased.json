@@ -5,14 +5,7 @@
 			{
 				"name": "Get Suffixes",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Change Names to Capital_copy1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -72,20 +65,9 @@
 							"typeProperties": {
 								"scripts": [
 									{
-										"parameters": [
-											{
-												"name": "tablename",
-												"type": "String",
-												"value": {
-													"value": "@concat('Names_',item().Namesuffix)",
-													"type": "Expression"
-												},
-												"direction": "Input"
-											}
-										],
 										"type": "NonQuery",
 										"text": {
-											"value": "TRUNCATE TABLE [UiLoad].[@tablename];\nINSERT INTO [UiLoad].[@tablename] (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM [UiStaging].[@tablename];",
+											"value": "TRUNCATE TABLE [UiLoad].[@concat('Names_',@item().Namesuffix)];",
 											"type": "Expression"
 										}
 									}
@@ -114,46 +96,6 @@
 						"value": "@activity('Get Suffixes').output.resultSets[0].rows",
 						"type": "Expression"
 					}
-				}
-			},
-			{
-				"name": "Change Names to Capital_copy1",
-				"type": "Script",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"parameters": [
-								{
-									"name": "tablename",
-									"type": "String",
-									"value": {
-										"value": "@concat('Names_','A')",
-										"type": "Expression"
-									},
-									"direction": "Input"
-								}
-							],
-							"type": "NonQuery",
-							"text": {
-								"value": "TRUNCATE TABLE [UiLoad].[pipeline().parameters.tablename];\nINSERT INTO [UiLoad].[pipeline().parameters.tablename] (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM [UiStaging].[pipeline().parameters.tablename];",
-								"type": "Expression"
-							}
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
