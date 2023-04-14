@@ -19,11 +19,8 @@
 				"startTime": "2023-04-14T14:09:00",
 				"timeZone": "Romance Standard Time",
 				"schedule": {
-					"minutes": [
-						31,
-						33,
-						35,
-						37
+					"hours": [
+						16
 					]
 				}
 			}
