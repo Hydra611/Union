@@ -78,7 +78,7 @@
 										],
 										"type": "Query",
 										"text": {
-											"value": "TRUNCATE TABLE UiLoad.@p_Tablename",
+											"value": "TRUNCATE TABLE @p_Tablename",
 											"type": "Expression"
 										}
 									}
