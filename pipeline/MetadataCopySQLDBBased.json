@@ -166,7 +166,7 @@
 							],
 							"type": "NonQuery",
 							"text": {
-								"value": "TRUNCATE TABLE @{variables('v_tablename')}",
+								"value": "TRUNCATE TABLE [UiLoad].@{variables('v_tablename')}",
 								"type": "Expression"
 							}
 						}
