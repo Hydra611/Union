@@ -1,0 +1,28 @@
+{
+	"name": "SecondTimeslots",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 15,
+				"startTime": "2023-04-14T14:45:00",
+				"endTime": "2023-04-15T14:45:00",
+				"timeZone": "W. Europe Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						17,
+						18,
+						19
+					]
+				}
+			}
+		}
+	}
+}
