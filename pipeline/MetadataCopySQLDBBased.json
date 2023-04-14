@@ -67,7 +67,7 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "TRUNCATE TABLE UiLoad.@{item().Tablename}",
+											"value": "TRUNCATE TABLE UiLoad.@{item().Tablename};\n\nINSERT INTO UiLoad.@{item().Tablename} (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.@{item().Tablename};",
 											"type": "Expression"
 										}
 									}
