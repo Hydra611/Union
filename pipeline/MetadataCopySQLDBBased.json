@@ -65,7 +65,7 @@
 							"typeProperties": {
 								"scripts": [
 									{
-										"type": "NonQuery",
+										"type": "Query",
 										"text": {
 											"value": "TRUNCATE TABLE UiLoad.@item().Tablename",
 											"type": "Expression"
