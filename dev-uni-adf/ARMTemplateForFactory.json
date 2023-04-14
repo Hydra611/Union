@@ -316,10 +316,20 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Minute",
+						"frequency": "Day",
 						"interval": 2,
 						"startTime": "2023-04-14T14:09:00",
-						"timeZone": "Romance Standard Time"
+						"timeZone": "Romance Standard Time",
+						"schedule": {
+							"minutes": [
+								45,
+								50,
+								55
+							],
+							"hours": [
+								16
+							]
+						}
 					}
 				}
 			},
