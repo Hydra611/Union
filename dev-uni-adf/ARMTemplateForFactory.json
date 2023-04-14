@@ -319,12 +319,7 @@
 						"frequency": "Minute",
 						"interval": 2,
 						"startTime": "2023-04-14T14:09:00",
-						"timeZone": "Romance Standard Time",
-						"schedule": {
-							"hours": [
-								16
-							]
-						}
+						"timeZone": "Romance Standard Time"
 					}
 				}
 			},
