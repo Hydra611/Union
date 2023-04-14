@@ -22,7 +22,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "SELECT concat('Names_',Namesuffix) as Namesuffix\nFROM UiConfig.Suffixes \nAS [result]"
+							"text": "SELECT concat('Names_',Namesuffix) as Tablename\nFROM UiConfig.Suffixes \nAS [result]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -67,7 +67,7 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "@concat('TRUNCATE TABLE UiLoad.', item().Namesuffix);",
+											"value": "@concat('TRUNCATE TABLE UiLoad.', item().Tablename);",
 											"type": "Expression"
 										}
 									}
