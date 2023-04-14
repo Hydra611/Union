@@ -67,7 +67,7 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "@concat('TRUNCATE TABLE UiLoad.', item().Tablename);",
+											"value": "TRUNCATE TABLE UiLoad.@item().Tablename",
 											"type": "Expression"
 										}
 									}
