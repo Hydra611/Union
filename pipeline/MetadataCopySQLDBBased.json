@@ -65,9 +65,20 @@
 							"typeProperties": {
 								"scripts": [
 									{
+										"parameters": [
+											{
+												"name": "p_Tablename",
+												"type": "String",
+												"value": {
+													"value": "@item().Tablename",
+													"type": "Expression"
+												},
+												"direction": "Input"
+											}
+										],
 										"type": "Query",
 										"text": {
-											"value": "TRUNCATE TABLE UiLoad.@item().Tablename",
+											"value": "TRUNCATE TABLE UiLoad.@p_Tablename",
 											"type": "Expression"
 										}
 									}
