@@ -1,0 +1,17 @@
+{
+	"name": "FirstTimeslots",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2023-04-14T14:09:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
