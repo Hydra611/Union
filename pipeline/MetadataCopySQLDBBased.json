@@ -5,7 +5,14 @@
 			{
 				"name": "Get Suffixes",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Test Change Names to Capital",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -107,6 +114,64 @@
 						"value": "@activity('Get Suffixes').output.resultSets[0].rows",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Test Set variable",
+				"description": "",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_tablename",
+					"value": "Names_A"
+				}
+			},
+			{
+				"name": "Test Change Names to Capital",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Test Set variable",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "p_Tablename",
+									"type": "String",
+									"value": {
+										"value": "@variables('v_tablename')",
+										"type": "Expression"
+									},
+									"direction": "Input"
+								}
+							],
+							"type": "NonQuery",
+							"text": {
+								"value": "TRUNCATE TABLE @{variables('v_tablename')}",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
