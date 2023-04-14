@@ -76,9 +76,9 @@
 												"direction": "Input"
 											}
 										],
-										"type": "Query",
+										"type": "NonQuery",
 										"text": {
-											"value": "TRUNCATE TABLE @p_Tablename",
+											"value": "TRUNCATE TABLE @item().Tablename;",
 											"type": "Expression"
 										}
 									}
