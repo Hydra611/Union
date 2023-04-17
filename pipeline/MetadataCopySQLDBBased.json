@@ -155,13 +155,7 @@
 				"outputs": [
 					{
 						"referenceName": "Load_Names_A",
-						"type": "DatasetReference",
-						"parameters": {
-							"c_db": {
-								"value": "@pipeline().parameters.p_db",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					}
 				]
 			}
