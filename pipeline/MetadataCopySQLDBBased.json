@@ -273,12 +273,15 @@
 						{
 							"type": "NonQuery",
 							"text": {
-								"value": "TRUNCATE TABLE UiLoad.Names_ALL;",
+								"value": "TRUNCATE TABLE UiLoad.Names_ALL;\n\nprint('successfull truncation')",
 								"type": "Expression"
 							}
 						}
 					],
-					"scriptBlockExecutionTimeout": "02:00:00"
+					"scriptBlockExecutionTimeout": "02:00:00",
+					"logSettings": {
+						"logDestination": "ActivityOutput"
+					}
 				}
 			}
 		],
