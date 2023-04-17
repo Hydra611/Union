@@ -125,7 +125,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "SELECT \n    Tabl,\n    'select ' + STRING_AGG('[' + Col + ']', ', ') + ' FROM [UiStaging].[' + Tabl + ']' AS TableSQL\nFROM [UiConfig].[TablesColumns]\nAS [result]\nGROUP BY [Tabl]"
+							"text": "SELECT \n    SchemaName,\n    TableName,\n    'select ' + STRING_AGG('[' + ColumnName+ ']', ', ') + ' FROM [' + SchemaName + '].[' + TableName + ']' AS TableSQL\nFROM [UiConfig].[TablesColumns]\nAS [result]\nGROUP BY [SchemaName], [TableName]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -200,7 +200,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"TableName": {
-											"value": "@item().Tabl",
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
+										"SchemaName": {
+											"value": "@item().SchemaName",
 											"type": "Expression"
 										}
 									}
@@ -209,7 +213,17 @@
 							"outputs": [
 								{
 									"referenceName": "Load_Table",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
+										"SchemaName": {
+											"value": "@item().SchemaName",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						},
