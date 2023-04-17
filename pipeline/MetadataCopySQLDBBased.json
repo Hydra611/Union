@@ -247,7 +247,10 @@
 								"scripts": [
 									{
 										"type": "NonQuery",
-										"text": "TRUNCATE TABLE UiLoad.@{item().Tabl};\n"
+										"text": {
+											"value": "TRUNCATE TABLE @{item().SchemaName}.@{item().TableName};",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
