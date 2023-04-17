@@ -149,13 +149,7 @@
 				"inputs": [
 					{
 						"referenceName": "Stage_Names_A",
-						"type": "DatasetReference",
-						"parameters": {
-							"c_db": {
-								"value": "@pipeline().parameters.p_db",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
@@ -172,12 +166,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"p_db": {
-				"type": "string",
-				"defaultValue": "dev-transformed-sqldb"
-			}
-		},
 		"variables": {
 			"v_suffix": {
 				"type": "Array"
