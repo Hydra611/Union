@@ -180,7 +180,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "SELECT \n    Tabl,\n    'select ' + STRING_AGG('[' + Col + ']', ', ') + ' FROM [UiConfig].[' + Tabl + ']'\nFROM [UiConfig].[TablesColumns]\nGROUP BY Tabl"
+							"text": "SELECT \n    Tabl,\n    'select ' + STRING_AGG('[' + Col + ']', ', ') + ' FROM [UiConfig].[' + Tabl + ']'\nFROM [UiConfig].[TablesColumns]\nGROUP BY Tabl\nas [result]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
