@@ -5,7 +5,14 @@
 			{
 				"name": "Get Suffixes",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Test Copy",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -18,7 +25,10 @@
 					"referenceName": "AzureSqlDatabase1",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"db": "dev-databricks-sqldb"
+						"db": {
+							"value": "@pipeline().parameters.p_db",
+							"type": "Expression"
+						}
 					}
 				},
 				"typeProperties": {
@@ -63,7 +73,13 @@
 							"userProperties": [],
 							"linkedServiceName": {
 								"referenceName": "AzureSqlDatabase1",
-								"type": "LinkedServiceReference"
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"db": {
+										"value": "@pipeline().parameters.p_db",
+										"type": "Expression"
+									}
+								}
 							},
 							"typeProperties": {
 								"scripts": [
@@ -100,8 +116,46 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Test Copy",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"db": {
+							"value": "@pipeline().parameters.p_db",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "TRUNCATE TABLE UiLoad.@{item().Tablename};\n\nINSERT INTO UiLoad.@{item().Tablename} (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.@{item().Tablename};"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
+		"parameters": {
+			"p_db": {
+				"type": "string",
+				"defaultValue": "dev-transformed-sqldb"
+			}
+		},
 		"variables": {
 			"v_suffix": {
 				"type": "Array"
