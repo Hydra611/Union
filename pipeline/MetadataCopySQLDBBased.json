@@ -5,7 +5,14 @@
 			{
 				"name": "Get Tables and Queries",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Truncate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -185,6 +192,42 @@
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
+						},
+						{
+							"name": "Transform",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "UpperCase",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "NonQuery",
+										"text": {
+											"value": "INSERT INTO UiLoad.Names_ALL (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiLoad.@{item().Tablename};",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
 						}
 					]
 				}
@@ -210,16 +253,9 @@
 				}
 			},
 			{
-				"name": "Transform",
+				"name": "Truncate",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Loop Over Tables and Columns",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -237,7 +273,7 @@
 						{
 							"type": "NonQuery",
 							"text": {
-								"value": "TRUNCATE TABLE UiLoad.Names_ALL;\n\nINSERT INTO UiLoad.Names_ALL (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiLoad.@{item().Tablename};",
+								"value": "TRUNCATE TABLE UiLoad.Names_ALL;",
 								"type": "Expression"
 							}
 						}
