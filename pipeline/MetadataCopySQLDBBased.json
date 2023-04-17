@@ -142,43 +142,7 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "TRUNCATE TABLE UiLoad.@{item().TableName};\n\nTRUNCATE TABLE UiLoad.Names_ALL;",
-											"type": "Expression"
-										}
-									}
-								],
-								"scriptBlockExecutionTimeout": "02:00:00"
-							}
-						},
-						{
-							"name": "Transform",
-							"type": "Script",
-							"dependsOn": [
-								{
-									"activity": "Test Copy Data",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"linkedServiceName": {
-								"referenceName": "AzureSqlDatabase1",
-								"type": "LinkedServiceReference"
-							},
-							"typeProperties": {
-								"scripts": [
-									{
-										"type": "NonQuery",
-										"text": {
-											"value": "INSERT INTO UiLoad.Names_ALL (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiLoad.@{item().Tablename};",
+											"value": "TRUNCATE TABLE UiLoad.@{item().TableName};",
 											"type": "Expression"
 										}
 									}
@@ -207,6 +171,42 @@
 						"value": "@activity('Get Tables and Queries').output.resultSets[0].rows",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Transform",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Loop Over Tables and Columns",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": {
+								"value": "TRUNCATE TABLE UiLoad.Names_ALL;\n\nINSERT INTO UiLoad.Names_ALL (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiLoad.@{item().Tablename};",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
