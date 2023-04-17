@@ -23,13 +23,7 @@
 				"userProperties": [],
 				"linkedServiceName": {
 					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"db": {
-							"value": "@pipeline().parameters.p_db",
-							"type": "Expression"
-						}
-					}
+					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
 					"scripts": [
