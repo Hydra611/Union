@@ -16,7 +16,10 @@
 				"userProperties": [],
 				"linkedServiceName": {
 					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"db": "dev-databricks-sqldb"
+					}
 				},
 				"typeProperties": {
 					"scripts": [
