@@ -99,6 +99,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"db": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"v_suffix": {
 				"type": "Array"
