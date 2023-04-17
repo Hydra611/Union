@@ -145,7 +145,7 @@
 									{
 										"type": "NonQuery",
 										"text": {
-											"value": "TRUNCATE TABLE @{item().SchemaName}.@{item().TableName};",
+											"value": "TRUNCATE TABLE UiLoad.@{item().TableName};",
 											"type": "Expression"
 										}
 									}
