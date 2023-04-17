@@ -7,7 +7,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Test Copy",
+						"activity": "Test Copy Data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -118,39 +118,7 @@
 				}
 			},
 			{
-				"name": "Test Copy",
-				"type": "Script",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"db": {
-							"value": "@pipeline().parameters.p_db",
-							"type": "Expression"
-						}
-					}
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "USE dev-databricks-sqldb;\n\nTRUNCATE TABLE UiLoad.Names_A;\n\nINSERT INTO UiLoad.Names_A (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.Names_A;"
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
-				"name": "Copy data1",
+				"name": "Test Copy Data",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -162,13 +130,32 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
 					"sink": {
 						"type": "AzureSqlSink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
+				"inputs": [
+					{
+						"referenceName": "Load_Names_A",
+						"type": "DatasetReference"
+					}
+				],
 				"outputs": [
 					{
 						"referenceName": "Stage_Names_A",
