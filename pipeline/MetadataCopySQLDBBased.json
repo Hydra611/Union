@@ -291,7 +291,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select [Name], [Age] FROM [UiConfig]",
+							"value": "select [Name], [Age] FROM [UiConfig].[Names_A]",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -318,10 +318,7 @@
 						"referenceName": "Stage_Table",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": {
-								"value": "Names_A",
-								"type": "Expression"
-							}
+							"TableName": "Names_A"
 						}
 					}
 				],
