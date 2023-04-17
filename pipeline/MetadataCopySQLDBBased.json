@@ -116,10 +116,7 @@
 											"value": "@item().TableName",
 											"type": "Expression"
 										},
-										"SchemaName": {
-											"value": "@item().SchemaName",
-											"type": "Expression"
-										}
+										"SchemaName": "UiLoad"
 									}
 								}
 							]
