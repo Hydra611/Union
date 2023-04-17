@@ -278,10 +278,7 @@
 							}
 						}
 					],
-					"scriptBlockExecutionTimeout": "02:00:00",
-					"logSettings": {
-						"logDestination": "ActivityOutput"
-					}
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
