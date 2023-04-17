@@ -106,7 +106,7 @@
 				}
 			},
 			{
-				"name": "Get Tables and Columns",
+				"name": "Get Tables and Queries",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -136,7 +136,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Tables and Columns",
+						"activity": "Set Tables and Queries",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -145,7 +145,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Tables and Columns').output.resultSets[0].rows",
+						"value": "@variables('v_conf')",
 						"type": "Expression"
 					},
 					"activities": [
@@ -246,6 +246,26 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Set Tables and Queries",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Tables and Queries",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_conf",
+					"value": {
+						"value": "@activity('Get Tables and Queries').output.resultSets[0].rows",
+						"type": "Expression"
+					}
 				}
 			}
 		],
