@@ -1,5 +1,5 @@
 {
-	"name": "Stage_Names_ALL",
+	"name": "Load_Names_ALL",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
