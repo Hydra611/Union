@@ -1,9 +1,14 @@
 {
-	"name": "Load_Names_A",
+	"name": "Load_Table",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -20,7 +25,10 @@
 		],
 		"typeProperties": {
 			"schema": "UiLoad",
-			"table": "Names_A"
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
 		}
 	}
 }

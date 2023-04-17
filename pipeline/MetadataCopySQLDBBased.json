@@ -132,8 +132,8 @@
 				}
 			},
 			{
-				"name": "Set Tables and Script",
-				"type": "SetVariable",
+				"name": "Loop Over Tables and Columns",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "Get Tables and Columns",
@@ -144,26 +144,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "v_conf",
-					"value": {
+					"items": {
 						"value": "@activity('Get Tables and Columns').output.resultSets[0].rows",
 						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Loop Over Tables and Columns",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Set Tables and Script",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
+					},
 					"activities": [
 						{
 							"name": "Test Copy Data",
@@ -202,13 +186,13 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "Load_Names_A",
+									"referenceName": "Load_Table",
 									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "Load_Names_A",
+									"referenceName": "Load_Table",
 									"type": "DatasetReference"
 								}
 							]
