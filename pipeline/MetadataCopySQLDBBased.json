@@ -208,14 +208,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Stage_Table",
-									"type": "DatasetReference",
-									"parameters": {
-										"TableName": {
-											"value": "@item().Tabl",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "Load_Table",
+									"type": "DatasetReference"
 								}
 							]
 						},
