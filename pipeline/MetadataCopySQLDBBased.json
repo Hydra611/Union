@@ -108,14 +108,7 @@
 			{
 				"name": "Get Tables and Queries",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Test Copy Data_copy1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -132,7 +125,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "SELECT \n    Tabl,\n    'select ' + STRING_AGG('[' + Col + ']', ', ') + ' FROM [UiConfig].[' + Tabl + ']' AS TableSQL\nFROM [UiConfig].[TablesColumns]\nAS [result]\nGROUP BY [Tabl]"
+							"text": "SELECT \n    Tabl,\n    'select ' + STRING_AGG('[' + Col + ']', ', ') + ' FROM [UiStaging].[' + Tabl + ']' AS TableSQL\nFROM [UiConfig].[TablesColumns]\nAS [result]\nGROUP BY [Tabl]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -274,66 +267,6 @@
 						"type": "Expression"
 					}
 				}
-			},
-			{
-				"name": "Test Copy Data_copy1",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "select [Name], [Age] FROM [UiConfig].[Names_A]",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Stage_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "Names_A"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Stage_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": {
-								"value": "Names_A",
-								"type": "Expression"
-							}
-						}
-					}
-				]
 			}
 		],
 		"variables": {
