@@ -186,13 +186,13 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "Load_Table",
+									"referenceName": "Stage_Table",
 									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "Load_Table",
+									"referenceName": "Stage_Table",
 									"type": "DatasetReference"
 								}
 							]

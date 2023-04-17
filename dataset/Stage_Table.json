@@ -1,5 +1,5 @@
 {
-	"name": "Load_Table",
+	"name": "Stage_Table",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
@@ -24,7 +24,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "UiLoad",
+			"schema": "UiStaging",
 			"table": {
 				"value": "@dataset().TableName",
 				"type": "Expression"
