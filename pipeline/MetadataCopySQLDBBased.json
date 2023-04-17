@@ -7,7 +7,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Test Copy Data",
+						"activity": "Loop Over Tables and Columns",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -106,61 +106,6 @@
 				}
 			},
 			{
-				"name": "Test Copy Data",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Set Tables and Columns",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT [Name]\n      ,[Age]\n  FROM [UiLoad].[Names_A]",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Stage_Names_ALL",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Load_Names_A",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
 				"name": "Get Tables and Columns",
 				"type": "Script",
 				"dependsOn": [],
@@ -187,7 +132,7 @@
 				}
 			},
 			{
-				"name": "Set Tables and Columns",
+				"name": "Set Tables and Script",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -204,6 +149,71 @@
 						"value": "@activity('Get Tables and Columns').output.resultSets[0].rows",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Loop Over Tables and Columns",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set Tables and Script",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"activities": [
+						{
+							"name": "Test Copy Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Load_Names_A",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Load_Names_A",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
 				}
 			}
 		],
