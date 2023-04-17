@@ -31,11 +31,11 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Get Suffixes",
+						"name": "Get Tables and Queries",
 						"type": "Script",
 						"dependsOn": [
 							{
-								"activity": "Test Copy Data",
+								"activity": "Truncate",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -51,30 +51,24 @@
 						"userProperties": [],
 						"linkedServiceName": {
 							"referenceName": "AzureSqlDatabase1",
-							"type": "LinkedServiceReference",
-							"parameters": {
-								"db": {
-									"value": "@pipeline().parameters.p_db",
-									"type": "Expression"
-								}
-							}
+							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
 							"scripts": [
 								{
 									"type": "Query",
-									"text": "SELECT concat('Names_',Namesuffix) as Tablename\nFROM UiConfig.Suffixes \nAS [result]"
+									"text": "SELECT \n    SchemaName,\n    TableName,\n    'select ' + STRING_AGG('[' + ColumnName+ ']', ', ') + ' FROM [' + SchemaName + '].[' + TableName + ']' AS TableSQL\nFROM [UiConfig].[TablesColumns]\nAS [result]\nGROUP BY [SchemaName], [TableName]"
 								}
 							],
 							"scriptBlockExecutionTimeout": "02:00:00"
 						}
 					},
 					{
-						"name": "Loop Over Suffixes",
+						"name": "Loop Over Tables and Columns",
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Set Variable",
+								"activity": "Set Tables and Queries",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -83,12 +77,87 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@variables('v_suffix')",
+								"value": "@variables('v_conf')",
 								"type": "Expression"
 							},
 							"activities": [
 								{
-									"name": "Change Names to Capital",
+									"name": "Test Copy Data",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Truncate Table",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@item().TableSQL",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false,
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Stage_Table",
+											"type": "DatasetReference",
+											"parameters": {
+												"TableName": {
+													"value": "@item().TableName",
+													"type": "Expression"
+												},
+												"SchemaName": {
+													"value": "@item().SchemaName",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Load_Table",
+											"type": "DatasetReference",
+											"parameters": {
+												"TableName": {
+													"value": "@item().TableName",
+													"type": "Expression"
+												},
+												"SchemaName": "UiLoad"
+											}
+										}
+									]
+								},
+								{
+									"name": "Truncate Table",
 									"type": "Script",
 									"dependsOn": [],
 									"policy": {
@@ -101,20 +170,86 @@
 									"userProperties": [],
 									"linkedServiceName": {
 										"referenceName": "AzureSqlDatabase1",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"db": {
-												"value": "@pipeline().parameters.p_db",
-												"type": "Expression"
-											}
-										}
+										"type": "LinkedServiceReference"
 									},
 									"typeProperties": {
 										"scripts": [
 											{
 												"type": "NonQuery",
 												"text": {
-													"value": "TRUNCATE TABLE UiLoad.@{item().Tablename};\n\nINSERT INTO UiLoad.@{item().Tablename} (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.@{item().Tablename};",
+													"value": "TRUNCATE TABLE UiLoad.@{item().TableName};",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "UpperCase",
+									"type": "Script",
+									"dependsOn": [
+										{
+											"activity": "Test Copy Data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "AzureSqlDatabase1",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "NonQuery",
+												"text": {
+													"value": "UPDATE [UiStaging].@{item().TableName}\nSET UpperCase = upper(Name)",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "Transform",
+									"type": "Script",
+									"dependsOn": [
+										{
+											"activity": "UpperCase",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "AzureSqlDatabase1",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "NonQuery",
+												"text": {
+													"value": "INSERT INTO UiLoad.Names_ALL (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiLoad.@{item().Tablename};",
 													"type": "Expression"
 												}
 											}
@@ -126,11 +261,11 @@
 						}
 					},
 					{
-						"name": "Set Variable",
+						"name": "Set Tables and Queries",
 						"type": "SetVariable",
 						"dependsOn": [
 							{
-								"activity": "Get Suffixes",
+								"activity": "Get Tables and Queries",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -138,16 +273,16 @@
 						],
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "v_suffix",
+							"variableName": "v_conf",
 							"value": {
-								"value": "@activity('Get Suffixes').output.resultSets[0].rows",
+								"value": "@activity('Get Tables and Queries').output.resultSets[0].rows",
 								"type": "Expression"
 							}
 						}
 					},
 					{
-						"name": "Test Copy Data",
-						"type": "Copy",
+						"name": "Truncate",
+						"type": "Script",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -157,54 +292,27 @@
 							"secureInput": false
 						},
 						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.Names_A;",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
+						"linkedServiceName": {
+							"referenceName": "AzureSqlDatabase1",
+							"type": "LinkedServiceReference"
 						},
-						"inputs": [
-							{
-								"referenceName": "Stage_Names_A",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Load_Names_A",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "NonQuery",
+									"text": {
+										"value": "TRUNCATE TABLE UiLoad.Names_ALL;\n\nprint('successfull truncation')",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
-				},
-				"parameters": {
-					"p_db": {
-						"type": "string",
-						"defaultValue": "dev-transformed-sqldb"
-					}
 				},
 				"variables": {
 					"v_suffix": {
@@ -212,14 +320,17 @@
 					},
 					"v_tablename": {
 						"type": "String"
+					},
+					"v_conf": {
+						"type": "Array"
 					}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]",
-				"[concat(variables('factoryId'), '/datasets/Stage_Names_A')]",
-				"[concat(variables('factoryId'), '/datasets/Load_Names_A')]"
+				"[concat(variables('factoryId'), '/datasets/Stage_Table')]",
+				"[concat(variables('factoryId'), '/datasets/Load_Table')]"
 			]
 		},
 		{
@@ -336,6 +447,96 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Load_Table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string"
+					},
+					"SchemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Age",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Stage_Table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string"
+					},
+					"SchemaName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Age",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureKeyVault1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -353,11 +554,6 @@
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"parameters": {
-					"db": {
-						"type": "String"
-					}
-				},
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
@@ -459,70 +655,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/MetadataCopySQLDBBased')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Stage_Names_A')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference",
-					"parameters": {}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Age",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "UiStaging",
-					"table": "Names_A"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Load_Names_A')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference",
-					"parameters": {}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Age",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "UiLoad",
-					"table": "Names_A"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		}
 	]
