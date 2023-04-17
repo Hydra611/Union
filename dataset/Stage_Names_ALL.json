@@ -1,5 +1,5 @@
 {
-	"name": "Stage_Names_A",
+	"name": "Stage_Names_ALL",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
@@ -19,8 +19,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "UiStaging",
-			"table": "Names_A"
+			"schema": "UiLoad",
+			"table": "Names_ALL"
 		}
 	}
 }
