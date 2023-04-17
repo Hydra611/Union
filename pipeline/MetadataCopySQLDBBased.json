@@ -143,7 +143,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE UiLoad.Names_A;\n\nINSERT INTO UiLoad.Names_A (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.Names_A;"
+							"text": "USE dev-databricks-sqldb;\n\nTRUNCATE TABLE UiLoad.Names_A;\n\nINSERT INTO UiLoad.Names_A (Name, Age)\nSELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.Names_A;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
