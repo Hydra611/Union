@@ -132,7 +132,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT upper(Name) AS Name,\n    Age\nFROM UiStaging.Names_A;",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
