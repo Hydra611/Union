@@ -138,11 +138,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": []
-						},
+						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
@@ -158,13 +154,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Load_Names_A",
+						"referenceName": "Stage_Names_A",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Stage_Names_A",
+						"referenceName": "Load_Names_A",
 						"type": "DatasetReference"
 					}
 				]
