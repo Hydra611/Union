@@ -213,7 +213,9 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "v_key",
-								"value": "\"Name\""
+								"value": [
+									"Name"
+								]
 							}
 						}
 					]
@@ -280,7 +282,7 @@
 				"type": "Array"
 			},
 			"v_key": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
