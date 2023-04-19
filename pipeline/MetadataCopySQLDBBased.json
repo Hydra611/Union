@@ -303,7 +303,7 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"writeBehavior": {
-							"value": "DELETE WHEN STATE == 'DEL'\nINSERT WHEN STATE == 'ADD'\nUPDATE WHEN STATE == 'UPD'",
+							"value": "MERGE UiLoad.Names_A AS target\nUSING UiStaging.Names_A AS source\nON (target.Name = source.Name)\nWHEN MATCHED AND source.CDC = 'UPD' THEN\n    UPDATE SET Age = source.Age\nWHEN MATCHED AND source.CDC = 'DEL' THEN\n    DELETE\nWHEN NOT MATCHED AND source.CDC = 'ADD' THEN\n    INSERT (Name, Age)\n    VALUES (source.Name, source.Age);",
 							"type": "Expression"
 						},
 						"sqlWriterUseTableLock": false,
