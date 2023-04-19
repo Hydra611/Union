@@ -78,7 +78,7 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"preCopyScript": {
-										"value": "TRUNCATE TABLE UiLoad.@{item().TableName};",
+										"value": "// TRUNCATE TABLE UiLoad.@{item().TableName};",
 										"type": "Expression"
 									},
 									"writeBehavior": "upsert",
