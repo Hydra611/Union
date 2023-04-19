@@ -87,10 +87,9 @@
 									"writeBehavior": "upsert",
 									"upsertSettings": {
 										"useTempDB": true,
-										"keys": {
-											"value": "@variables('v_key')",
-											"type": "Expression"
-										}
+										"keys": [
+											"Name"
+										]
 									},
 									"sqlWriterUseTableLock": false,
 									"disableMetricsCollection": false
