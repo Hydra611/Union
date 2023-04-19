@@ -56,7 +56,14 @@
 						{
 							"name": "Test Copy Data",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set key",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -77,16 +84,13 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": {
-										"value": "// TRUNCATE TABLE UiLoad.@{item().TableName};",
-										"type": "Expression"
-									},
 									"writeBehavior": "upsert",
 									"upsertSettings": {
 										"useTempDB": true,
-										"keys": [
-											"Name"
-										]
+										"keys": {
+											"value": "@variables('v_key')",
+											"type": "Expression"
+										}
 									},
 									"sqlWriterUseTableLock": false,
 									"disableMetricsCollection": false
@@ -202,6 +206,16 @@
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
+						},
+						{
+							"name": "Set key",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_key",
+								"value": "Name"
+							}
 						}
 					]
 				}
@@ -265,6 +279,9 @@
 			},
 			"v_conf": {
 				"type": "Array"
+			},
+			"v_key": {
+				"type": "String"
 			}
 		},
 		"annotations": []
