@@ -245,14 +245,7 @@
 			{
 				"name": "Truncate",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Test Copy Data_copy1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -277,83 +270,6 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
-			},
-			{
-				"name": "Test Copy Data_copy1",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "select [Name], [Age] FROM [UiStaging].[Names_A]",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": {
-							"value": "BEGIN\nMERGE UiLoad.Names_A AS target\nUSING UiStaging.Names_A AS source\nON (target.Name = source.Name)\nWHEN MATCHED AND source.CDC = 'UPD' THEN\n    UPDATE SET Age = source.Age\nWHEN MATCHED AND source.CDC = 'DEL' THEN\n    DELETE\nWHEN NOT MATCHED AND source.CDC = 'ADD' THEN\n    INSERT (Name, Age)\n    VALUES (source.Name, source.Age)\nEND",
-							"type": "Expression"
-						},
-						"sqlWriterUseTableLock": false,
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								"Name"
-							]
-						},
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "Stage_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": {
-								"value": "Names_A",
-								"type": "Expression"
-							},
-							"SchemaName": {
-								"value": "UiStaging",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Load_Table",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": {
-								"value": "Names_A",
-								"type": "Expression"
-							},
-							"SchemaName": "UiLoad"
-						}
-					}
-				]
 			}
 		],
 		"variables": {
