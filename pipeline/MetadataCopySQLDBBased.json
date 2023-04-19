@@ -58,7 +58,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Set key",
+									"activity": "Set key column",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -87,9 +87,10 @@
 									"writeBehavior": "upsert",
 									"upsertSettings": {
 										"useTempDB": true,
-										"keys": [
-											"Name"
-										]
+										"keys": {
+											"value": "@variables('v_key')",
+											"type": "Expression"
+										}
 									},
 									"sqlWriterUseTableLock": false,
 									"disableMetricsCollection": false
@@ -207,7 +208,7 @@
 							}
 						},
 						{
-							"name": "Set key",
+							"name": "Set key column",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
