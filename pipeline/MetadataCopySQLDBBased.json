@@ -71,7 +71,16 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": [],
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().SchemaName}.@{item().TableName}"
+								},
+								{
+									"name": "Destination",
+									"value": "@{'UiLoad'}.@{item().TableName}"
+								}
+							],
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
