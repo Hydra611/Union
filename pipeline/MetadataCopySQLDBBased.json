@@ -305,10 +305,9 @@
 						"writeBehavior": "upsert",
 						"upsertSettings": {
 							"useTempDB": true,
-							"keys": {
-								"value": "Name",
-								"type": "Expression"
-							}
+							"keys": [
+								"Name"
+							]
 						},
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
