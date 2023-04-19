@@ -214,7 +214,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "v_key",
-								"value": "Name"
+								"value": "\"Name\""
 							}
 						}
 					]
