@@ -302,14 +302,17 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
+						"writeBehavior": {
+							"value": "DELETE WHEN STATE == 'DEL'\nINSERT WHEN STATE == 'ADD'\nUPDATE WHEN STATE == 'UPD'",
+							"type": "Expression"
+						},
+						"sqlWriterUseTableLock": false,
 						"upsertSettings": {
 							"useTempDB": true,
 							"keys": [
 								"Name"
 							]
 						},
-						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
