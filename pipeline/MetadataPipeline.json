@@ -30,7 +30,7 @@
 								}
 							],
 							"type": "NonQuery",
-							"text": "DROP TABLE ${entity}"
+							"text": "DROP TABLE {@entity}"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
