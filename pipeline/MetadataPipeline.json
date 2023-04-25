@@ -5,7 +5,14 @@
 			{
 				"name": "Drop Test",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -21,22 +28,32 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"parameters": [
-								{
-									"name": "entity",
-									"type": "String",
-									"value": "crmipk_p",
-									"direction": "Input"
-								}
-							],
 							"type": "NonQuery",
-							"text": "DROP TABLE {@entity}"
+							"text": {
+								"value": "DROP TABLE @{variables('tableName')}",
+								"type": "Expression"
+							}
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "tableName",
+					"value": "crmipk_p"
+				}
 			}
 		],
+		"variables": {
+			"tableName": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
