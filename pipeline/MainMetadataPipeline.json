@@ -1,5 +1,5 @@
 {
-	"name": "MetadataPipeline",
+	"name": "MainMetadataPipeline",
 	"properties": {
 		"activities": [
 			{
@@ -7,13 +7,13 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Set Table Name",
+						"activity": "Set Table Name Of Metadata Table",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "Set Column Name",
+						"activity": "Set Table Name",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,7 +45,7 @@
 				}
 			},
 			{
-				"name": "Set Table Name",
+				"name": "Set Table Name Of Metadata Table",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"userProperties": [],
@@ -223,7 +223,7 @@
 				]
 			},
 			{
-				"name": "Set Column Name",
+				"name": "Set Table Name",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"userProperties": [],
