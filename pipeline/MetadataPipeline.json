@@ -3,18 +3,18 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Drop Test",
+				"name": "Creata Metadata Table",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "Set Table Name",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
 				"policy": {
-					"timeout": "0.12:00:00",
+					"timeout": "0.00:10:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -28,9 +28,15 @@
 				"typeProperties": {
 					"scripts": [
 						{
+							"parameters": [
+								{
+									"name": "",
+									"value": ""
+								}
+							],
 							"type": "NonQuery",
 							"text": {
-								"value": "DROP TABLE @{variables('tableName')}",
+								"value": "DROP TABLE IF EXISTS [dbo].[@{variables('tableName')}];\n\nCREATE TABLE [dbo].[@{variables('tableName')}](\n    [export] varchar(5),\n    [import] varchar(5),\n    [entity_display_name] VARCHAR(50) NOT NULL,\n    [entity_logical_name] VARCHAR(50) NOT NULL,\n    [logical_name] VARCHAR(50) NOT NULL,\n    [schema_name] VARCHAR(50) NOT NULL,\n    [display_name] VARCHAR(100),\n    [attribute_type] VARCHAR(20) NOT NULL,\n    [description] VARCHAR(1000),\n    [custom_attribute] VARCHAR(5) NOT NULL,\n    [type] VARCHAR(10),\n    [additional_data] VARCHAR(1000)\n)\n",
 								"type": "Expression"
 							}
 						}
@@ -39,7 +45,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Set Table Name",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"userProperties": [],
@@ -47,6 +53,174 @@
 					"variableName": "tableName",
 					"value": "crmipk_p"
 				}
+			},
+			{
+				"name": "Ingest Excel Data To SQL Table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Creata Metadata Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:10:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBatchTimeout": "0.00:00:00",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Export"
+								},
+								"sink": {
+									"name": "export",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Import"
+								},
+								"sink": {
+									"name": "import",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Entity Display Name"
+								},
+								"sink": {
+									"name": "entity_display_name",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Entity Logical Name"
+								},
+								"sink": {
+									"name": "entity_logical_name",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Logical Name"
+								},
+								"sink": {
+									"name": "logical_name",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Schema Name"
+								},
+								"sink": {
+									"name": "schema_name",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Display Name"
+								},
+								"sink": {
+									"name": "display_name",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Attribute Type"
+								},
+								"sink": {
+									"name": "attribute_type",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Description"
+								},
+								"sink": {
+									"name": "description",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Custom Attribute"
+								},
+								"sink": {
+									"name": "custom_attribute",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Type"
+								},
+								"sink": {
+									"name": "type",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Additional data"
+								},
+								"sink": {
+									"name": "additional_data",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "metadata_crmikpk_p",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_asql_metadata_crmipk_p",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"variables": {
