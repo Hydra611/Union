@@ -30,7 +30,7 @@
 								}
 							],
 							"type": "NonQuery",
-							"text": "DROP TABLE IF EXISTS [dbo].[@tablename];"
+							"text": "DROP TABLE IF EXISTS [dbo].@tablename"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
