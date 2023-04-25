@@ -25,7 +25,8 @@
 					"dataset": {
 						"referenceName": "ds_asql_metadata_crmipk_p",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
