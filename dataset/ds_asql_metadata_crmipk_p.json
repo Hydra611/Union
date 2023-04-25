@@ -1,0 +1,68 @@
+{
+	"name": "ds_asql_metadata_crmipk_p",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_asql_metadataui",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ui_metadata"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "export",
+				"type": "varchar"
+			},
+			{
+				"name": "import",
+				"type": "varchar"
+			},
+			{
+				"name": "entity_display_name",
+				"type": "varchar"
+			},
+			{
+				"name": "entity_logical_name",
+				"type": "varchar"
+			},
+			{
+				"name": "logical_name",
+				"type": "varchar"
+			},
+			{
+				"name": "schema_name",
+				"type": "varchar"
+			},
+			{
+				"name": "display_name",
+				"type": "varchar"
+			},
+			{
+				"name": "attribute_type",
+				"type": "varchar"
+			},
+			{
+				"name": "description",
+				"type": "varchar"
+			},
+			{
+				"name": "custom_attribute",
+				"type": "varchar"
+			},
+			{
+				"name": "type",
+				"type": "varchar"
+			},
+			{
+				"name": "additional_data",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "crmipk_p"
+		}
+	}
+}
