@@ -189,10 +189,7 @@
 								{
 									"name": "TableName",
 									"type": "String",
-									"value": {
-										"value": "crmipk_p",
-										"type": "Expression"
-									},
+									"value": "crmipk_p",
 									"direction": "Input"
 								}
 							],
