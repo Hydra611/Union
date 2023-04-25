@@ -11,6 +11,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Set Column Name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -215,10 +221,23 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Set Column Name",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "columnName",
+					"value": "entity_logical_name"
+				}
 			}
 		],
 		"variables": {
 			"tableName": {
+				"type": "String"
+			},
+			"columnName": {
 				"type": "String"
 			}
 		},
