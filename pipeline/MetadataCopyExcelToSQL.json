@@ -190,7 +190,7 @@
 									"name": "TableName",
 									"type": "String",
 									"value": {
-										"value": "@variables('v_tablename')",
+										"value": "crmipk_p",
 										"type": "Expression"
 									},
 									"direction": "Input"
