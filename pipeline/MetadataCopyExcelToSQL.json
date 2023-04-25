@@ -5,14 +5,7 @@
 			{
 				"name": "Create Metadata Table",
 				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Set table name",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.00:10:00",
 					"retry": 0,
@@ -41,16 +34,6 @@
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
-				"name": "Set table name",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "v_tablename",
-					"value": "crmipk_p"
 				}
 			}
 		],
