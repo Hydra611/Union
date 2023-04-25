@@ -29,8 +29,8 @@
 									"direction": "Input"
 								}
 							],
-							"type": "Query",
-							"text": "DROP TABLE dbo.[@entity]"
+							"type": "NonQuery",
+							"text": "DROP TABLE @entity"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
