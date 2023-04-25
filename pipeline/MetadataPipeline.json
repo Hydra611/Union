@@ -229,7 +229,43 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "columnName",
-					"value": "entity_logical_name"
+					"value": "account"
+				}
+			},
+			{
+				"name": "Create account Table",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Ingest Excel Data To SQL Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:10:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_asql_metadataui",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": {
+								"value": "DROP TABLE IF EXISTS account;\n\nDECLARE @entity_logical_name VARCHAR(50), @logical_name VARCHAR(50)\nDECLARE @sql VARCHAR(MAX)\n\nDECLARE myCursor CURSOR FOR \nSELECT entity_logical_name, logical_name FROM crmipk_p\nWHERE entity_logical_name = '@{variables('columnName')}'\n\nOPEN myCursor\nFETCH NEXT FROM myCursor INTO @entity_logical_name, @logical_name \n\n-- Create table with entity_logical_name as table name\nSET @sql = 'CREATE TABLE ' + QUOTENAME(@entity_logical_name) + '('\nWHILE @@FETCH_STATUS = 0\nBEGIN\n  -- Add logical_name as a column to the table\n  SET @sql = @sql + QUOTENAME(@logical_name) + ' VARCHAR(50), '\n  \n  FETCH NEXT FROM myCursor INTO @entity_logical_name , @logical_name \nEND\n-- Remove the trailing comma and close the parentheses\nSET @sql = LEFT(@sql, LEN(@sql) - 1) + ')'\nEXEC (@sql)\n\nCLOSE myCursor\nDEALLOCATE myCursor",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
