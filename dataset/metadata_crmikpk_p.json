@@ -1,0 +1,74 @@
+{
+	"name": "metadata_crmikpk_p",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls_excel_metadata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ui_metadata"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Metadata",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "metadata_crmikpk_p.xlsx",
+				"folderPath": "excel_spread_sheet",
+				"fileSystem": "raw"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Export",
+				"type": "String"
+			},
+			{
+				"name": "Import",
+				"type": "String"
+			},
+			{
+				"name": "Entity Display Name",
+				"type": "String"
+			},
+			{
+				"name": "Entity Logical Name",
+				"type": "String"
+			},
+			{
+				"name": "Logical Name",
+				"type": "String"
+			},
+			{
+				"name": "Schema Name",
+				"type": "String"
+			},
+			{
+				"name": "Display Name",
+				"type": "String"
+			},
+			{
+				"name": "Attribute Type",
+				"type": "String"
+			},
+			{
+				"name": "Description",
+				"type": "String"
+			},
+			{
+				"name": "Custom Attribute",
+				"type": "String"
+			},
+			{
+				"name": "Type",
+				"type": "String"
+			},
+			{
+				"name": "Additional data",
+				"type": "String"
+			}
+		]
+	}
+}
