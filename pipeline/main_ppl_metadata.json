@@ -1,5 +1,5 @@
 {
-	"name": "MainMetadataPipeline",
+	"name": "main_ppl_metadata",
 	"properties": {
 		"activities": [
 			{
