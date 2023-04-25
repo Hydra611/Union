@@ -187,14 +187,14 @@
 						{
 							"parameters": [
 								{
-									"name": "TableName",
+									"name": "@tablename",
 									"type": "String",
 									"value": "crmipk_p",
 									"direction": "Input"
 								}
 							],
 							"type": "NonQuery",
-							"text": "DROP TABLE IF EXISTS [dbo].[@TableName];\n\nCREATE TABLE [@TableName] (\n    [export] varchar(5),\n    [import] varchar(5),\n    [entity_display_name] VARCHAR(50) NOT NULL,\n    [entity_logical_name] VARCHAR(50) NOT NULL,\n    [logical_name] VARCHAR(50) NOT NULL,\n    [schema_name] VARCHAR(50) NOT NULL,\n    [display_name] VARCHAR(100),\n    [attribute_type] VARCHAR(20) NOT NULL,\n    [description] VARCHAR(1000),\n    [custom_attribute] VARCHAR(5) NOT NULL,\n    [type] VARCHAR(10),\n    [additional_data] VARCHAR(1000)\n);"
+							"text": "DROP TABLE IF EXISTS [dbo].[@tablename];\n\nCREATE TABLE [@tablename] (\n    [export] varchar(5),\n    [import] varchar(5),\n    [entity_display_name] VARCHAR(50) NOT NULL,\n    [entity_logical_name] VARCHAR(50) NOT NULL,\n    [logical_name] VARCHAR(50) NOT NULL,\n    [schema_name] VARCHAR(50) NOT NULL,\n    [display_name] VARCHAR(100),\n    [attribute_type] VARCHAR(20) NOT NULL,\n    [description] VARCHAR(1000),\n    [custom_attribute] VARCHAR(5) NOT NULL,\n    [type] VARCHAR(10),\n    [additional_data] VARCHAR(1000)\n);"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
