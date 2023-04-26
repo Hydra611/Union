@@ -49,14 +49,14 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Entity Names",
+							"name": "EntityNames",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "table_name",
 								"value": {
-									"value": "@item().table_name",
+									"value": "@item().EntityNames",
 									"type": "Expression"
 								}
 							}
