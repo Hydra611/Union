@@ -54,7 +54,7 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "table_name",
+								"variableName": "entity_logical_name",
 								"value": {
 									"value": "@item().entity_logical_name",
 									"type": "Expression"
@@ -66,7 +66,7 @@
 			}
 		],
 		"variables": {
-			"table_name": {
+			"entity_logical_name": {
 				"type": "String"
 			}
 		},
