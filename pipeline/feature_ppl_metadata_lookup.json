@@ -30,7 +30,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "crmipk_p Output",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -52,7 +52,10 @@
 							"name": "Set variable1",
 							"type": "SetVariable",
 							"dependsOn": [],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": ""
+							}
 						}
 					]
 				}
