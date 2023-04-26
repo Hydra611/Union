@@ -56,7 +56,7 @@
 							"typeProperties": {
 								"variableName": "table_name",
 								"value": {
-									"value": "@item().table_name",
+									"value": "@item().entity_logical_name",
 									"type": "Expression"
 								}
 							}
