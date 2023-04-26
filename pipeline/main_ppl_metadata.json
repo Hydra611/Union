@@ -267,6 +267,55 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "Kleiner Buffer",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Create account Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 3
+				}
+			},
+			{
+				"name": "Create Tables Via Metadata Table",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Kleiner Buffer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:10:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_asql_metadataui",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": "DROP TABLE IF EXISTS crmikpk_entity_names;\n\nSELECT DISTINCT(entity_logical_name)\nINTO dbo.crmikpk_entity_names\nFROM crmipk_p\nORDER BY entity_logical_name ASC;\n\nDROP TABLE IF EXISTS crmikpk_attribute_names;\n\nSELECT DISTINCT(logical_name)\nINTO dbo.crmikpk_attribute_names\nFROM crmipk_p\nORDER BY logical_name ASC;\n\nDECLARE @entity_logical_name_drop VARCHAR(50)\nDECLARE @sql_drop NVARCHAR(MAX)\nDECLARE entity_cursor_drop CURSOR FOR\n    SELECT entity_logical_name FROM crmikpk_entity_names\nOPEN entity_cursor_drop\nFETCH NEXT FROM entity_cursor_drop INTO @entity_logical_name_drop\n\nWHILE @@FETCH_STATUS = 0\nBEGIN\n    SET @sql_drop = 'DROP TABLE IF EXISTS ' + QUOTENAME(@entity_logical_name_drop)\n    EXEC sp_executesql @sql_drop\n\n    FETCH NEXT FROM entity_cursor_drop INTO @entity_logical_name_drop\nEND\nCLOSE entity_cursor_drop\nDEALLOCATE entity_cursor_drop;\n\nDECLARE @entity_logical_name VARCHAR(50), @logical_name VARCHAR(50)\nDECLARE @sql VARCHAR(MAX)\n\nDECLARE entity_cursor CURSOR FOR \nSELECT DISTINCT entity_logical_name FROM crmipk_p\n\nOPEN entity_cursor\nFETCH NEXT FROM entity_cursor INTO @entity_logical_name\n\nWHILE @@FETCH_STATUS = 0\nBEGIN\n  DECLARE attribute_cursor CURSOR FOR \n  SELECT logical_name FROM crmipk_p\n  WHERE entity_logical_name = @entity_logical_name\n\n  SET @sql = 'CREATE TABLE ' + QUOTENAME(@entity_logical_name) + '('\n\n  OPEN attribute_cursor\n  FETCH NEXT FROM attribute_cursor INTO @logical_name \n\n  WHILE @@FETCH_STATUS = 0\n  BEGIN\n\n    SET @sql = @sql + QUOTENAME(@logical_name) + ' VARCHAR(50), '\n\n    FETCH NEXT FROM attribute_cursor INTO @logical_name \n  END\n\n  CLOSE attribute_cursor\n  DEALLOCATE attribute_cursor\n\n  SET @sql = LEFT(@sql, LEN(@sql) - 1) + ')'\n  EXEC (@sql)\n\n  FETCH NEXT FROM entity_cursor INTO @entity_logical_name\nEND\n\nCLOSE entity_cursor\nDEALLOCATE entity_cursor;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"variables": {
