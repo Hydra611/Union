@@ -307,8 +307,22 @@
 				"typeProperties": {
 					"scripts": [
 						{
+							"parameters": [
+								{
+									"name": "",
+									"value": ""
+								},
+								{
+									"name": "",
+									"value": ""
+								}
+							],
+							"type": "NonQuery",
+							"text": "CREATE FUNCTION dbo.add1(@x int)\nRETURNS int\nAS\nBEGIN\n  RETURN (SELECT @x * 4);\nEND;"
+						},
+						{
 							"type": "Query",
-							"text": "CREATE FUNCTION dbo.add1(@x int)\nRETURNS int\nAS\nBEGIN\n  RETURN (SELECT @x * 4);\nEND\nGO\n\nSELECT dbo.add1(v.Value1), dbo.add1(v.Value2)\nFROM (VALUES(1,2),(3,4)) AS v(Value1, Value2);"
+							"text": "SELECT dbo.add1(v.Value1), dbo.add1(v.Value2)\nFROM (VALUES(1,2),(3,4)) AS v(Value1, Value2);"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
