@@ -307,16 +307,6 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"parameters": [
-								{
-									"name": "",
-									"value": ""
-								},
-								{
-									"name": "",
-									"value": ""
-								}
-							],
 							"type": "NonQuery",
 							"text": "CREATE FUNCTION dbo.add1(@x int)\nRETURNS int\nAS\nBEGIN\n  RETURN (SELECT @x * 4);\nEND;"
 						},
