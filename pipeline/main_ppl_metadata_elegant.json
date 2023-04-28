@@ -241,10 +241,30 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "SELECT \n    SchemaName,\n    TableName,\n    'select ' + STRING_AGG('[' + ColumnName+ ']', ', ') + ' FROM [' + SchemaName + '].[' + TableName + ']' AS TableSQL\nFROM [UiConfig].[TablesColumns]\nAS [result]\nGROUP BY [SchemaName], [TableName]"
+							"text": "DROP TABLE IF EXISTS [dbo].[crmipk_p_dt_mapping];\n\nCREATE TABLE [dbo].[crmipk_p_dt_mapping] (\n    [dt_oracle] VARCHAR(50) NOT NULL,\n    [dt_tsql] VARCHAR(50) NOT NULL\n);\n\nINSERT INTO [dbo].[crmipk_p_dt_mapping] ([dt_oracle], [dt_tsql])\nVALUES ('Multiline Text',  'VARCHAR(100)'),\n       ('Decimal',  'DECIMAL(8, 2)'),\n       ('BigInt',  'BIGINT'),\n       ('Currency', 'MONEY'),\n       ('Two options', 'BIT'),\n       ('Virtual', 'VARCHAR(100)'),\n       ('Status', 'VARCHAR(100)'),\n       ('Choice', 'VARCHAR(100)'),\n       ('DateTime', 'DATE'),\n       ('Lookup', 'VARCHAR(100)'),\n       ('Uniqueidentifier', 'UNIQUEIDENTIFIER'),\n       ('Customer', 'VARCHAR(100)'),\n       ('Double', 'FLOAT'),\n       ('State', 'VARCHAR(100)'),\n       ('Whole number', 'INT'),\n       ('Text', 'VARCHAR(MAX)'),\n       ('Owner', 'VARCHAR(MAX)');\n\n\n-- From CTE out of metadata table and datatype mapping table, create the 'CREATE TABLE' table\n\nWITH [crmipk_p_temp] AS (\n    SELECT [crmipk_p].[entity_logical_name], [crmipk_p].[logical_name], [crmipk_p_dt_mapping].[dt_tsql] AS [attribute_type_tsql] ,[crmipk_p].[attribute_type]\n    FROM [crmipk_p_dt_mapping]\n    JOIN [crmipk_p]\n    ON [crmipk_p].[attribute_type] = [crmipk_p_dt_mapping].[dt_oracle]\n)\nSELECT \n    [entity_logical_name],\n    'CREATE TABLE ' + [entity_logical_name] + ' ( ' + STRING_AGG( CAST([logical_name] + ' ' + [attribute_type_tsql] AS NVARCHAR(MAX)), ', ') + ' )' AS [create_table_statement] \nFROM [crmipk_p_temp]\nAS [result]\nGROUP BY [entity_logical_name];"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Set Tables And Queries",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Create Table Statement",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_config",
+					"value": {
+						"value": "@activity('Create Table Statement').output.resultSets[0].rows",
+						"type": "Expression"
+					}
 				}
 			}
 		],
@@ -253,6 +273,9 @@
 				"type": "String"
 			},
 			"entity_logical_name": {
+				"type": "String"
+			},
+			"v_config": {
 				"type": "String"
 			}
 		},
