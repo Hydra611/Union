@@ -276,7 +276,7 @@
 				"type": "String"
 			},
 			"v_config": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
