@@ -255,7 +255,14 @@
 			{
 				"name": "Truncate",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Function Test",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -276,6 +283,32 @@
 								"value": "TRUNCATE TABLE UiLoad.Names_ALL;\n\nprint('successfull truncation')",
 								"type": "Expression"
 							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Function Test",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "CREATE FUNCTION dbo.add1(@x int)\nRETURNS int\nAS\nBEGIN\n  RETURN (SELECT @x * 4);\nEND\nGO\n\nSELECT dbo.add1(v.Value1), dbo.add1(v.Value2)\nFROM (VALUES(1,2),(3,4)) AS v(Value1, Value2);"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
