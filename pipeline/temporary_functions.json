@@ -4,11 +4,11 @@
 		"description": "Vertestung, ob wir temporäre Funktionen innerhalb einer Script Activity nutzen können.",
 		"activities": [
 			{
-				"name": "Multiplikation",
+				"name": "Methode 1",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "0.12:00:00",
+					"timeout": "0.00:10:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -23,7 +23,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "DECLARE @add_x_y_func nvarchar(4000) = N'SELECT @c = @a * @b;';\nDECLARE @add_x_y_param nvarchar(500) = N'@a int, @b int, @c int OUTPUT';\n\nDECLARE @result int;\nEXEC sp_executesql @add_x_y_func, @add_x_y_param, 6, 7, @c = @result OUTPUT;\nPRINT CONVERT(varchar, @result); -- Es sollte '42' rauskommen"
+							"text": "-- Erstelle eine Tabelle zum Vertesten\nCREATE TABLE [dbo].[temp_table] (\n    X INT,\n    Y INT\n);\n\n-- Einbinden von Testzahlen\nINSERT INTO [dbo].[temp_table](X, Y)\nVALUES (6, 7), (8, 9), (10, 11);\n\n-- Definiere die ad-hoc Funktion in einem SET Statement und anschließende EXEC\nDECLARE @sql NVARCHAR(MAX)\nSET @sql = '\nCREATE FUNCTION multiply (@num_1 int, @num_2 int)\nRETURNS INT\nAS\nBEGIN\n    DECLARE @result INT\n    SET @result = @num_1 * @num_2\n    RETURN @result\nEND\n'\n\nEXEC sp_executesql @sql;\n\n-- Aufrufen der Funktion und Schreiben der Ergebnisse in eine neue Spalte\nSELECT X, Y, [dbo].[multiply](X, Y) AS Product\nFROM [dbo].[temp_table]\n\n-- DROP FUNCTION\nDROP FUNCTION [dbo].[multiply]\n\n-- DROP TABLE\nDROP TABLE [dbo].[temp_table]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
