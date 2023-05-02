@@ -1,0 +1,35 @@
+{
+	"name": "temporary_functions",
+	"properties": {
+		"description": "Vertestung, ob wir temporäre Funktionen innerhalb einer Script Activity nutzen können.",
+		"activities": [
+			{
+				"name": "Multiplikation",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_asql_metadataui",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "DECLARE @add_x_y_func nvarchar(4000) = N'SELECT @c = @a * @b;';\nDECLARE @add_x_y_param nvarchar(500) = N'@a int, @b int, @c int OUTPUT';\n\nDECLARE @result int;\nEXEC sp_executesql @add_x_y_func, @add_x_y_param, 6, 7, @c = @result OUTPUT;\nPRINT CONVERT(varchar, @result); -- Es sollte '42' rauskommen"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
