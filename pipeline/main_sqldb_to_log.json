@@ -42,7 +42,7 @@
 				"typeProperties": {
 					"variableName": "lookup_output",
 					"value": {
-						"value": "@activity('Lookup Metadata').output.firstRow",
+						"value": "@{activity('Lookup Metadata').output.firstRow}",
 						"type": "Expression"
 					}
 				}
@@ -50,7 +50,7 @@
 		],
 		"variables": {
 			"lookup_output": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
