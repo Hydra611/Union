@@ -30,8 +30,8 @@
 				}
 			},
 			{
-				"name": "Methode 2 TEMPORARY STORED PROCEDURE",
-				"description": "Achievable via designating the usp with leading #",
+				"name": "Methode 2 STORE FUNCTION EXPRESSION AS VARIABLE",
+				"description": "",
 				"type": "Script",
 				"dependsOn": [
 					{
