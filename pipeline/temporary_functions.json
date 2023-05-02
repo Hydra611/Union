@@ -4,7 +4,7 @@
 		"description": "Vertestung, ob wir temporäre Funktionen innerhalb einer Script Activity nutzen können.",
 		"activities": [
 			{
-				"name": "Methode 1",
+				"name": "Methode 1 CREATE DROP",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -23,7 +23,41 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "-- Erstelle eine Tabelle zum Vertesten\nCREATE TABLE [dbo].[temp_table] (\n    X INT,\n    Y INT\n);\n\n-- Einbinden von Testzahlen\nINSERT INTO [dbo].[temp_table](X, Y)\nVALUES (6, 7), (8, 9), (10, 11);\n\n-- Definiere die ad-hoc Funktion in einem SET Statement und anschließende EXEC\nDECLARE @sql NVARCHAR(MAX)\nSET @sql = '\nCREATE FUNCTION multiply (@num_1 int, @num_2 int)\nRETURNS INT\nAS\nBEGIN\n    DECLARE @result INT\n    SET @result = @num_1 * @num_2\n    RETURN @result\nEND\n'\n\nEXEC sp_executesql @sql;\n\n-- Aufrufen der Funktion und Schreiben der Ergebnisse in eine neue Spalte\nSELECT X, Y, [dbo].[multiply](X, Y) AS Product\nFROM [dbo].[temp_table]\n\n-- DROP FUNCTION\nDROP FUNCTION [dbo].[multiply]\n\n-- DROP TABLE\nDROP TABLE [dbo].[temp_table]"
+							"text": "DROP TABLE IF EXISTS [dbo].[temp_table];\n\n-- Erstelle eine Tabelle zum Vertesten\nCREATE TABLE [dbo].[temp_table] (\n    X INT,\n    Y INT\n);\n\n-- Einbinden von Testzahlen\nINSERT INTO [dbo].[temp_table](X, Y)\nVALUES (6, 7), (8, 9), (10, 11);\n\n-- Definiere die ad-hoc Funktion in einem SET Statement und anschließende EXEC\nDECLARE @sql NVARCHAR(MAX)\nSET @sql = '\nCREATE FUNCTION multiply (@num_1 int, @num_2 int)\nRETURNS INT\nAS\nBEGIN\n    DECLARE @result INT\n    SET @result = @num_1 * @num_2\n    RETURN @result\nEND\n'\n\nEXEC sp_executesql @sql;\n\n-- Aufrufen der Funktion und Schreiben der Ergebnisse in eine neue Spalte\nSELECT X, Y, [dbo].[multiply](X, Y) AS Product\nFROM [dbo].[temp_table]\n\n-- DROP FUNCTION\nDROP FUNCTION [dbo].[multiply]\n\n"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Methode 2 TEMPORARY STORED PROCEDURE",
+				"description": "Achievable via designating the usp with leading #",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Methode 1 CREATE DROP",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:10:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_asql_metadataui",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "CREATE PROCEDURE #usp_temp_multiply\n    @table_name NVARCHAR(MAX)\nAS\nBEGIN\n    DECLARE @sql NVARCHAR(MAX) = N'SELECT X, Y, X * Y AS product FROM ' + QUOTENAME(@table_name)\n    EXEC sp_executesql @sql\nEND;\n\nEXEC #usp_temp_multiply @table_name = 'temp_table';"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
