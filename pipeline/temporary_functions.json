@@ -57,7 +57,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "CREATE PROCEDURE #usp_temp_multiply\n    @table_name NVARCHAR(MAX)\nAS\nBEGIN\n    DECLARE @sql NVARCHAR(MAX) = N'SELECT X, Y, X * Y AS product FROM ' + QUOTENAME(@table_name)\n    EXEC sp_executesql @sql\nEND;\n\nEXEC #usp_temp_multiply @table_name = 'temp_table';"
+							"text": "CREATE PROCEDURE #usp_temp_multiply\n    @table_name NVARCHAR(MAX)\nAS\nBEGIN\n    DECLARE @sql NVARCHAR(MAX) = N'SELECT X, Y, X * Y AS product FROM ' + QUOTENAME(@table_name)\n    EXEC sp_executesql @sql\nEND;\n\nEXEC #usp_temp_multiply @table_name = 'temp_table';\n\nSELECT * FROM temp_table;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
