@@ -1,5 +1,5 @@
 {
-	"name": "temporary_functions",
+	"name": "main_temp_functions",
 	"properties": {
 		"description": "Vertestung, ob wir temporäre Funktionen innerhalb einer Script Activity nutzen können.",
 		"activities": [
