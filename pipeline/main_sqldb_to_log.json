@@ -50,7 +50,7 @@
 		],
 		"variables": {
 			"lookup_output": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
