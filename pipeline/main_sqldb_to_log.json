@@ -13,6 +13,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
@@ -22,10 +23,36 @@
 					"dataset": {
 						"referenceName": "ds_asql_metadata_crmipk_p",
 						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Lookup Output",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup Metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "lookup_output",
+					"value": {
+						"value": "@activity('Lookup Metadata').output.value[0]",
+						"type": "Expression"
 					}
 				}
 			}
 		],
+		"variables": {
+			"lookup_output": {
+				"type": "Array"
+			}
+		},
 		"annotations": []
 	}
 }
