@@ -52,7 +52,7 @@
 					"headers": {
 						"Authorization": "SharedKey 093d54b2-5351-4eed-9a70-4d7bbbcaf05b:n4BQs4QJif0o99hV0f67XNjnPGd9w7bpGUI3S3qUNgo=",
 						"Content-Type": "application/json",
-						"Log-Type": "MyNewRecordType",
+						"Log-Type": "CustomLogUI_CL",
 						"time-generated-field": "TimeGenerated",
 						"x-ms-date": "Wed, 03 May 2023 15:49:00 GMT"
 					},
