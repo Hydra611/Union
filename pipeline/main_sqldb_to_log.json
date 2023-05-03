@@ -26,6 +26,37 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "LogAnalytics",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.00:10:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://093d54b2-5351-4eed-9a70-4d7bbbcaf05b.ods.opinsights.azure.com/api/logs?api-version=2016-04-01",
+					"method": "POST",
+					"headers": {
+						"Authorization": "SharedKey 093d54b2-5351-4eed-9a70-4d7bbbcaf05b:8DXDu0aY9x1SL1XemB7qBEI2PDL8Dol+xRUal9f+JAXG3StD4dBArp73xX7egbWcOS1Ssba4iGsY8PRLH/UDnw==",
+						"Content-Type": "application/json",
+						"Log-Type": "CustomLogUI_CL",
+						"time-generated-field": "TimeGenerated"
+					},
+					"body": [
+						{
+							"TimeGenerated": "2023-05-03 16:26:00",
+							"Source": "MyCustomLog1",
+							"ErrorCode": "2656",
+							"ErrorMessage": "System Warning"
+						}
+					]
+				}
 			}
 		],
 		"variables": {
