@@ -30,7 +30,14 @@
 			{
 				"name": "LogAnalytics",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Lookup Custom Log",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.00:10:00",
 					"retry": 0,
