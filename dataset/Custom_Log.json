@@ -1,0 +1,16 @@
+{
+	"name": "Custom_Log",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_asql_metadataui",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "test_logs"
+		}
+	}
+}
