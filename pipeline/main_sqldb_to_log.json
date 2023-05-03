@@ -19,11 +19,16 @@
 					"method": "POST",
 					"headers": {
 						"content-type": "application/json",
-						"Authorization": "SharedKey 093d54b2-5351-4eed-9a70-4d7bbbcaf05b:c3zGu0yINn+KUMkQEe2zRRzv3esV8EfXGN2iZIPqatk=",
+						"Authorization": "SharedKey 093d54b2-5351-4eed-9a70-4d7bbbcaf05b:JA+QJfSuYT9LVquGZEyOZ09I8siR3ngJd4SmyfhmDjY=",
 						"Log-Type": "WebMonitorHost",
-						"x-ms-date": "Wed, 03 May 2023 16:27:04 GMT"
+						"x-ms-date": "Wed, 03 May 2023 16:38:29 GMT"
 					},
-					"body": "[{\"slot_ID\":12345,\"ID\":\"5cdad72f-c848-4df0-8aaa-ffe033e75d57\",\"availability_Value\":100,\"performance_Value\":6.954,\"measurement_Name\":\"last_one_hour\",\"duration\":3600,\"w\narning_Threshold\":0,\"critical_Threshold\":0,\"IsActive\":\"true\"},{\"slot_ID\":67890,\"ID\":\"b6bee458-fb65-492e-996d-61c4d7fbb942\",\"availability_Value\":100,\"performance_Value\":3.3\n79,\"measurement_Name\":\"last_one_hour\",\"duration\":3600,\"warning_Threshold\":0,\"critical_Threshold\":0,\"IsActive\":\"false\"}]\n"
+					"body": [
+						{
+							"A": 6,
+							"B": 7
+						}
+					]
 				}
 			}
 		],
