@@ -50,9 +50,9 @@
 					"url": "https://093d54b2-5351-4eed-9a70-4d7bbbcaf05b.ods.opinsights.azure.com/api/logs?api-version=2016-04-01",
 					"method": "POST",
 					"headers": {
-						"Authorization": "Bearer t62a53Otb9ln5PmXpd5KllmQK48oN6krjupt1fo8zfJbDD6UQUjXSL5cfZYEJ/xUtPSZVDzw7U7jZby1iMZiwA==",
+						"Authorization": "SharedKey 093d54b2-5351-4eed-9a70-4d7bbbcaf05b:n4BQs4QJif0o99hV0f67XNjnPGd9w7bpGUI3S3qUNgo=",
 						"Content-Type": "application/json",
-						"Log-Type": "CustomLogUI_CL",
+						"Log-Type": "MyNewRecordType",
 						"time-generated-field": "TimeGenerated",
 						"x-ms-date": "Wed, 03 May 2023 15:49:00 GMT"
 					},
