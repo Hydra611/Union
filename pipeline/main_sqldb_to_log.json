@@ -53,7 +53,8 @@
 						"Authorization": "Bearer 8DXDu0aY9x1SL1XemB7qBEI2PDL8Dol+xRUal9f+JAXG3StD4dBArp73xX7egbWcOS1Ssba4iGsY8PRLH/UDnw==",
 						"Content-Type": "application/json",
 						"Log-Type": "CustomLogUI_CL",
-						"time-generated-field": "TimeGenerated"
+						"time-generated-field": "TimeGenerated",
+						"x-ms-date": "2023-05-03T14:19:40Z"
 					},
 					"body": [
 						{
