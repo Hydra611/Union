@@ -54,10 +54,7 @@
 						"Content-Type": "application/json",
 						"Log-Type": "CustomLogUI_CL",
 						"time-generated-field": "TimeGenerated",
-						"x-ms-date": {
-							"value": "utcNow('yyyy-MM-ddTHH:mm:ssZ')",
-							"type": "Expression"
-						}
+						"x-ms-date": "Wed, 03 May 2023 15:31:34 GMT"
 					},
 					"body": [
 						{
