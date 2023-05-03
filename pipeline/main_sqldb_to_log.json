@@ -55,7 +55,7 @@
 						"Log-Type": "CustomLogUI_CL",
 						"time-generated-field": "TimeGenerated",
 						"x-ms-date": {
-							"value": "@utcNow('yyyy-MM-ddTHH:mm:ssZ')",
+							"value": "utcNow('yyyy-MM-ddTHH:mm:ssZ')",
 							"type": "Expression"
 						}
 					},
