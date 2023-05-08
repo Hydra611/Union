@@ -23,7 +23,11 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "DECLARE @statement NVARCHAR(MAX)\nSET @statement = ' \nCREATE FUNCTION multiply (@num_1 INT, @num_2 INT)\nRETURNS INT\nAS\nBEGIN\n    DECLARE @result INT\n    SET @result = @num_1 * @num_2\n    RETURN @result\nEND\n'\n\nEXEC sp_executesql @statement\n\nSELECT X,Y, [dbo].[multiply](X, Y) AS PRODUCT\nFROM [dbo].[temp_table]"
+							"text": "DECLARE @statement NVARCHAR(MAX)\nSET @statement = ' \nCREATE FUNCTION multiply (@num_1 INT, @num_2 INT)\nRETURNS INT\nAS\nBEGIN\n    DECLARE @result INT\n    SET @result = @num_1 * @num_2\n    RETURN @result\nEND\n'\n\nEXEC sp_executesql @statement\n\nSELECT X,Y, [dbo].[multiply](X, Y) AS PRODUCT\nFROM [dbo].[temp_table];\n"
+						},
+						{
+							"type": "NonQuery",
+							"text": "DROP FUNCTION [dbo].[multiply];"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
