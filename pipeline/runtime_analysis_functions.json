@@ -34,7 +34,7 @@
 			},
 			{
 				"name": "DROP The Function",
-				"description": "DROP FUNCTION [dbo].[tst_function]",
+				"description": "",
 				"type": "Script",
 				"dependsOn": [
 					{
@@ -59,7 +59,8 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"type": "Query"
+							"type": "NonQuery",
+							"text": "DROP FUNCTION [dbo].[tst_function]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
