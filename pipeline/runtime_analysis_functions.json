@@ -40,7 +40,7 @@
 					{
 						"activity": "Check If Functions Are Persisted",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
