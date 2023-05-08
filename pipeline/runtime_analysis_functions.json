@@ -22,7 +22,7 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "CREATE FUNCTION tst_function(@input VARCHAR(50))\nRETURNS VARCHAR(50)\nAS BEGIN\n    RETURN 'Hello ' + @input\nEND"
+							"text": "CREATE FUNCTION tst_function(@input VARCHAR(50))\nRETURNS VARCHAR(50)\nAS \nBEGIN\n    RETURN 'Hello ' + @input\nEND"
 						},
 						{
 							"type": "Query",
