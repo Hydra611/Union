@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Check If Functions Are Persisted",
+				"name": "Create Function",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -21,22 +21,21 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"type": "Query",
-							"text": "CREATE FUNCTION tst_function(@input VARCHAR(50))\nRETURNS VARCHAR(50)\nAS \nBEGIN\n    RETURN 'Hello ' + @input\nEND;\n\nDECLARE @result VARCHAR(50)\nSET @result = tst_function('world');\nSELECT @result"
+							"type": "NonQuery",
+							"text": "RETURNS VARCHAR(50)\nAS \nBEGIN\n    RETURN 'Hello ' + @input\nEND;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			},
 			{
-				"name": "DROP The Function",
-				"description": "",
+				"name": "Call Function",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Check If Functions Are Persisted",
+						"activity": "Create Function",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -48,17 +47,8 @@
 					"secureInput": false
 				},
 				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "ls_asql_metadataui",
-					"type": "LinkedServiceReference"
-				},
 				"typeProperties": {
-					"scripts": [
-						{
-							"type": "NonQuery",
-							"text": "DROP FUNCTION [dbo].[tst_function]"
-						}
-					],
+					"scripts": [],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
