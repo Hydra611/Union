@@ -22,7 +22,7 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "RETURNS VARCHAR(50)\nAS \nBEGIN\n    RETURN 'Hello ' + @input\nEND;"
+							"text": "CREATE FUNCTION tst_function (@input NVARCHAR(50))\nRETURNS NVARCHAR(50)\nAS \nBEGIN\n    DECLARE @output NVARCHAR(50)\n    SET @output = 'Hello ' + @input\n    RETURN @output\nEND;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
