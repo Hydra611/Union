@@ -56,7 +56,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "DECLARE @result VARCHAR(50)\nSET @result = dbo.tst_function('world');\nSELECT @result\n"
+							"text": "DECLARE @result NVARCHAR(50)\nSET @result = dbo.tst_function('world');\nSELECT @result\n"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
