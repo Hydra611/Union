@@ -21,12 +21,8 @@
 				"typeProperties": {
 					"scripts": [
 						{
-							"type": "NonQuery",
-							"text": "CREATE FUNCTION tst_function(@input VARCHAR(50))\nRETURNS VARCHAR(50)\nAS \nBEGIN\n    RETURN 'Hello ' + @input\nEND"
-						},
-						{
 							"type": "Query",
-							"text": "DECLARE @result VARCHAR(50)\nSET @result = dbo.tst_function('world')\nSELECT @result"
+							"text": "CREATE FUNCTION tst_function(@input VARCHAR(50))\nRETURNS VARCHAR(50)\nAS \nBEGIN\n    RETURN 'Hello ' + @input\nEND\n\nDECLARE @result VARCHAR(50)\nSET @result = dbo.tst_function('world')\nSELECT @result"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
