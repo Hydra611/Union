@@ -30,6 +30,7 @@
 			},
 			{
 				"name": "Call Function",
+				"description": "",
 				"type": "Script",
 				"dependsOn": [
 					{
@@ -47,8 +48,17 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "ls_asql_metadataui",
+					"type": "LinkedServiceReference"
+				},
 				"typeProperties": {
-					"scripts": [],
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "DECLARE @result VARCHAR(50)\nSET @result = dbo.tst_function('world');\nSELECT @result\n"
+						}
+					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
