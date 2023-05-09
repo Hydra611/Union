@@ -33,7 +33,7 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "SELECT X, Y, [dbo].[multiply](X, Y) AS Product\nFROM [dbo].[temp_table]"
+										"text": "WITH MultiplyInputs AS (\n    SELECT X AS Input1, Y AS Input2\n    FROM [dbo].[temp_table]\n)\nSELECT Input1, Input2, Input1 * Input2 AS Product\nFROM MultiplyInputs;"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
