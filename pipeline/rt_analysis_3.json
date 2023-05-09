@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(int(variables('loop_counter')), int(variables('update_counter')))",
+						"value": "@equals(int(variables('update_counter')), 50)",
 						"type": "Expression"
 					},
 					"activities": [
