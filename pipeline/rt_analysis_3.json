@@ -52,7 +52,7 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "loop_counter",
+								"variableName": "Update Counter",
 								"value": {
 									"value": "@string(add(int(variables('loop_counter')), 1))",
 									"type": "Expression"
@@ -68,6 +68,9 @@
 			"loop_counter": {
 				"type": "String",
 				"defaultValue": "0"
+			},
+			"Update Counter": {
+				"type": "String"
 			}
 		},
 		"annotations": []
