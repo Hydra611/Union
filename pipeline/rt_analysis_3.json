@@ -3,32 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Function_Always_Exist",
-				"type": "Script",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "00.10:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "ls_asql_metadataui",
-					"type": "LinkedServiceReference"
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "SELECT X, Y, [dbo].[multiply](X, Y) AS Product\nFROM [dbo].[temp_table]"
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
-				}
-			},
-			{
 				"name": "Loop Termination",
 				"type": "Until",
 				"dependsOn": [],
@@ -63,6 +37,26 @@
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						},
+						{
+							"name": "Increment Loop Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Function always exist",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "loop_counter",
+								"value": {
+									"value": "@string(add(int(variables('loop_counter')), 1))",
+									"type": "Expression"
+								}
 							}
 						}
 					],
