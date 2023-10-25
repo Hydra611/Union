@@ -1,6 +1,37 @@
 {
 	"name": "Send Mail",
 	"properties": {
+		"activities": [
+			{
+				"name": "Send Mail",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-191.westeurope.logic.azure.com:443/workflows/948057e22fa342359ebbe6635766e8e3/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=QUxSdyCBZqraM6Pa4LEDkyee1TTid12mJkGbtYE-czQ",
+					"method": "POST",
+					"body": {
+						"message": "This is a custom dynamic message from your pipeline with run ID @{pipeline().RunId}.",
+						"dataFactoryName": "@{pipeline().DataFactory}",
+						"pipelineName": "@{pipeline().Pipeline}",
+						"receiver": "@{pipeline().parameters.receiver}"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"receiver": {
+				"type": "string",
+				"defaultValue": "philipp.gratza@adesso.de"
+			}
+		},
 		"annotations": []
 	}
 }
