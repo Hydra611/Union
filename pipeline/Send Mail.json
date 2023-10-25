@@ -29,7 +29,7 @@
 		"parameters": {
 			"receiver": {
 				"type": "string",
-				"defaultValue": "philipp.gratza@adesso.de"
+				"defaultValue": "philipp.gratza@web.de"
 			}
 		},
 		"annotations": []
